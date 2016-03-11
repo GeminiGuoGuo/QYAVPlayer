@@ -133,6 +133,7 @@
                 //[myself.player play];
         }];
         [self play];
+        [self.playBtn setBackgroundImage:[UIImage imageNamed:@"player_pause"] forState:UIControlStateNormal];
     }
     
 }
