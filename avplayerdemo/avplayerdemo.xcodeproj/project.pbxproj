@@ -17,6 +17,7 @@
 		D6DFB3111C903B3300012571 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6DFB30F1C903B3300012571 /* LaunchScreen.storyboard */; };
 		D6DFB31C1C903B3300012571 /* avplayerdemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D6DFB31B1C903B3300012571 /* avplayerdemoTests.m */; };
 		D6DFB3271C903B3300012571 /* avplayerdemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D6DFB3261C903B3300012571 /* avplayerdemoUITests.m */; };
+		D6E89E761C995EDA00328C3B /* AVController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E89E751C995EDA00328C3B /* AVController.m */; };
 		D6EFBCF41C915299005618ED /* QYAVPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EFBCF31C915299005618ED /* QYAVPlayer.m */; };
 		D6EFBCFB1C915BDC005618ED /* player_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D6EFBCF51C915BDC005618ED /* player_slider@2x.png */; };
 		D6EFBCFC1C915BDC005618ED /* player_slider@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D6EFBCF61C915BDC005618ED /* player_slider@3x.png */; };
@@ -62,6 +63,8 @@
 		D6DFB3221C903B3300012571 /* avplayerdemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = avplayerdemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6DFB3261C903B3300012571 /* avplayerdemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = avplayerdemoUITests.m; sourceTree = "<group>"; };
 		D6DFB3281C903B3300012571 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6E89E741C995EDA00328C3B /* AVController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVController.h; sourceTree = "<group>"; };
+		D6E89E751C995EDA00328C3B /* AVController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVController.m; sourceTree = "<group>"; };
 		D6EFBCF21C915299005618ED /* QYAVPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYAVPlayer.h; sourceTree = "<group>"; };
 		D6EFBCF31C915299005618ED /* QYAVPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYAVPlayer.m; sourceTree = "<group>"; };
 		D6EFBCF51C915BDC005618ED /* player_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_slider@2x.png"; sourceTree = "<group>"; };
@@ -124,6 +127,8 @@
 				D6DFB3051C903B3300012571 /* AppDelegate.m */,
 				D6DFB3071C903B3300012571 /* ViewController.h */,
 				D6DFB3081C903B3300012571 /* ViewController.m */,
+				D6E89E741C995EDA00328C3B /* AVController.h */,
+				D6E89E751C995EDA00328C3B /* AVController.m */,
 				D6EFBCF21C915299005618ED /* QYAVPlayer.h */,
 				D6EFBCF31C915299005618ED /* QYAVPlayer.m */,
 				D67255A01C92C8A300721F20 /* big.png */,
@@ -236,6 +241,7 @@
 				TargetAttributes = {
 					D6DFB2FD1C903B3300012571 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = NNU46DW3NW;
 					};
 					D6DFB3161C903B3300012571 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -308,6 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6DFB3091C903B3300012571 /* ViewController.m in Sources */,
+				D6E89E761C995EDA00328C3B /* AVController.m in Sources */,
 				D6EFBCF41C915299005618ED /* QYAVPlayer.m in Sources */,
 				D6DFB3061C903B3300012571 /* AppDelegate.m in Sources */,
 				D6DFB3031C903B3300012571 /* main.m in Sources */,
@@ -451,10 +458,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = avplayerdemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lianchuangworld.guoqingyang.avplayerdemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.liagworld.guo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -462,10 +472,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = avplayerdemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lianchuangworld.guoqingyang.avplayerdemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.liagworld.guo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "QYAVPlayer.h"
-
+#import "AVController.h"
 #define kWidth  [[UIScreen mainScreen] bounds].size.width
 #define kHeight  [[UIScreen mainScreen] bounds].size.height
 
@@ -47,6 +47,10 @@
     
 
     
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    //[self presentViewController:[AVController new] animated:YES completion:NO];
 }
 
 //-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{

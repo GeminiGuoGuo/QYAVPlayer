@@ -11,10 +11,9 @@
 @interface QYAVPlayer ()
 {
     NSURL *videlUrl;
+    BOOL isHave;
     BOOL isPlay;
     UIView *controllView;
-    UISlider *_slider;
-    UILabel *time;
     UIProgressView *_progressView;
     UIButton *change;
 }
@@ -23,12 +22,15 @@
 @property (nonatomic, strong) AVPlayerItem *playerItem;
 @property(nonatomic,strong) UIButton *playBtn;
 @property (nonatomic, assign) id periodicTimeObserver;
+@property(nonatomic,strong)UISlider *slider;
+@property(nonatomic,strong)UILabel *time;
 @end
 
 @implementation QYAVPlayer
 
 -(instancetype)initWithFrame:(CGRect)frame WithUrl:(NSURL*)url{
     if (self = [super initWithFrame:frame]) {
+        isHave = NO;
         videlUrl = url;
         [self drawPlayer];
         [self drawControllView];
@@ -79,17 +81,18 @@
 }
 
 -(void)drawSlider{
-    _slider = [[UISlider alloc]init];
-    _slider.translatesAutoresizingMaskIntoConstraints = NO;
-    _slider.maximumTrackTintColor= [UIColor clearColor];
-    _slider.minimumTrackTintColor = [UIColor clearColor];
+    isHave = YES;
+    self.slider = [[UISlider alloc]init];
+    self.slider.translatesAutoresizingMaskIntoConstraints = NO;
+    self.slider.maximumTrackTintColor= [UIColor clearColor];
+    self.slider.minimumTrackTintColor = [UIColor clearColor];
     CGFloat totalSecond = self.playerItem.duration.value / self.playerItem.duration.timescale;
-    _slider.maximumValue = totalSecond;
-    [_slider setThumbImage:[UIImage imageNamed:@"player_slider"] forState:UIControlStateNormal];
+    self.slider.maximumValue = totalSecond;
     _progressView = [[UIProgressView alloc]init];
     _progressView.translatesAutoresizingMaskIntoConstraints = NO;
     [controllView addSubview:_progressView];
     [controllView addSubview:_slider];
+    [_slider setThumbImage:[UIImage imageNamed:@"player_slider"] forState:UIControlStateNormal];
     NSLayoutConstraint *topToolConstraint = [NSLayoutConstraint constraintWithItem:_slider attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeTop multiplier:1.0f constant:10];
     NSLayoutConstraint *leftToolConstraint = [NSLayoutConstraint constraintWithItem:_slider attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.playBtn attribute:NSLayoutAttributeLeading multiplier:1.0f constant:30];
     NSLayoutConstraint *rightToolConstraint = [NSLayoutConstraint constraintWithItem:_slider attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeWidth multiplier:1 constant:-140];
@@ -100,10 +103,10 @@
     __weak typeof(self) myself = self;
     _periodicTimeObserver = [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:NULL usingBlock:^(CMTime time1) {
         CGFloat currentSecond = myself.playerItem.currentTime.value/myself.playerItem.currentTime.timescale;
-        [_slider setValue:currentSecond animated:YES];
+        [myself.slider setValue:currentSecond animated:YES];
         //CGFloat currentSecond = _playerItem.currentTime.value/_playerItem.currentTime.timescale;// 计算当前在第几秒
         CGFloat totalSecond = _playerItem.duration.value / _playerItem.duration.timescale;// 转换成秒
-        time.text = [NSString stringWithFormat:@"%.@/%@",[self transform:currentSecond],[self transform:totalSecond]];
+        myself.time.text = [NSString stringWithFormat:@"%.@/%@",[myself transform:currentSecond],[myself transform:totalSecond]];
     }];
     NSLayoutConstraint *topToolConstraint1 = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeTop multiplier:1.0f constant:14];
     NSLayoutConstraint *leftToolConstraint1 = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.playBtn attribute:NSLayoutAttributeLeading multiplier:1.0f constant:30];
@@ -121,7 +124,7 @@
 }
 -(void)sliderValueChanged:(UISlider *)sender{
     [self.player pause];
-    time.text = [NSString stringWithFormat:@"%@/%@", [self transform:sender.value], [self transform:_playerItem.duration.value / _playerItem.duration.timescale]];
+    self.time.text = [NSString stringWithFormat:@"%@/%@", [self transform:sender.value], [self transform:_playerItem.duration.value / _playerItem.duration.timescale]];
        __weak typeof(self) myself = self;
     if(sender.value == 0.000000) {
         [_player seekToTime:kCMTimeZero completionHandler:^(BOOL finished) {
@@ -139,15 +142,15 @@
 }
 
 -(void)timelabel{
-    time = [UILabel new];
-    [controllView addSubview:time];
-    time.text = @"--:--/--:--";
-    time.font = [UIFont systemFontOfSize:10];
-    time.translatesAutoresizingMaskIntoConstraints = NO;
-    NSLayoutConstraint *topToolConstraint = [NSLayoutConstraint constraintWithItem:time attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeTop multiplier:1.0f constant:10];
-    NSLayoutConstraint *leftToolConstraint = [NSLayoutConstraint constraintWithItem:time attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_slider attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:10];
-    NSLayoutConstraint *rightToolConstraint = [NSLayoutConstraint constraintWithItem:time attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeTrailing multiplier:1 constant:-30];
-    NSLayoutConstraint *bottomToolConstraint = [NSLayoutConstraint constraintWithItem:time attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeBottom multiplier:1.f constant:-10];
+    self.time = [UILabel new];
+    [controllView addSubview:self.time];
+    self.time.text = @"--:--/--:--";
+    self.time.font = [UIFont systemFontOfSize:10];
+    self.time.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *topToolConstraint = [NSLayoutConstraint constraintWithItem:self.time attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeTop multiplier:1.0f constant:10];
+    NSLayoutConstraint *leftToolConstraint = [NSLayoutConstraint constraintWithItem:self.time attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_slider attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:10];
+    NSLayoutConstraint *rightToolConstraint = [NSLayoutConstraint constraintWithItem:self.time attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeTrailing multiplier:1 constant:-30];
+    NSLayoutConstraint *bottomToolConstraint = [NSLayoutConstraint constraintWithItem:self.time attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeBottom multiplier:1.f constant:-10];
     [controllView addConstraints:@[topToolConstraint, leftToolConstraint, rightToolConstraint, bottomToolConstraint]];
    // [self changebtn];//全屏按钮,暂没实现
 
@@ -158,7 +161,7 @@
     [controllView addSubview:change];
     [change setBackgroundImage:[UIImage imageNamed:@"big"] forState:UIControlStateNormal];
     NSLayoutConstraint *topToolConstraint = [NSLayoutConstraint constraintWithItem:change attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeTop multiplier:1.0f constant:8];
-    NSLayoutConstraint *leftToolConstraint = [NSLayoutConstraint constraintWithItem:change attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:time attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:8];
+    NSLayoutConstraint *leftToolConstraint = [NSLayoutConstraint constraintWithItem:change attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.time attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:8];
     NSLayoutConstraint *rightToolConstraint = [NSLayoutConstraint constraintWithItem:change attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeTrailing multiplier:1 constant:-8];
     NSLayoutConstraint *bottomToolConstraint = [NSLayoutConstraint constraintWithItem:change attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:controllView attribute:NSLayoutAttributeBottom multiplier:1.f constant:-8];
     [controllView addConstraints:@[topToolConstraint, leftToolConstraint, rightToolConstraint, bottomToolConstraint]];
@@ -216,7 +219,9 @@
             [UIView animateWithDuration:0.3 animations:^{
                 controllView.hidden = NO;
             }];
-            [self drawSlider];
+            if (!isHave) {
+                [self drawSlider];
+            }
             [self play];
         } else {
             //播放源不可用
@@ -298,6 +303,14 @@
     else
         result = window.rootViewController;
     return result;
+}
+#pragma mark - dealloc
+-(void)dealloc{
+    [_playerItem removeObserver:self forKeyPath:@"status" context:nil];
+    [_playerItem removeObserver:self forKeyPath:@"loadedTimeRanges" context:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_playerItem];
+    [_player removeTimeObserver:_periodicTimeObserver];
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 
